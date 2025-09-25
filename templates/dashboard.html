@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadata for the page -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title> <!-- Dynamic title -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <div class="container">
+
+        <!-- Header Section -->
+        <header>
+            <h1>Welcome to your dashboard, {{ current_user.username|e  }}!</h1> <!-- Display the logged-in user's username -->
+            <a href="{{ url_for('logout') }}" class="logout-button">Logout</a> <!-- Logout button -->
+        </header>
+
+        <!-- Flash Notifications -->
+        <div id="flash-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="flash-notification flash-{{ category }}">
+                            {{ message }}
+                            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
+
+        <!-- Directories Section -->
+        <section class="directories">
+            <h2>Your Directories:</h2>
+            <ul>
+                {% for directory_meta in directories %}
+                <li class="directory-item">
+                    <div class="directory-row">
+                        <a href="{{ url_for('view_directory', directory_id=directory_meta.id) }}" class="directory-link">{{ directory_meta.original_dir_name|e }}</a>
+                        <form action="{{ url_for('delete_directory', directory_id=directory_meta.id) }}" method="POST" class="inline-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="icon-button"
+                                title="Delete '{{ directory_meta.original_dir_name|e }}'"
+                                data-confirm="Are you sure you want to permanently delete the directory '{{ directory_meta.original_dir_name|e }}'?">
+                                🗑️
+                            </button>
+                        </form>
+                    </div>
+                </li>
+                {% else %}
+                    <li>No directories found. Create one!</li>
+                {% endfor %}
+            </ul>
+        </section>
+        <hr class="section-divider">
+
+        <!-- Create New Directory Section -->
+        <section class="create-directory">
+            <h3>Create a New Directory</h3> <!-- Section title for creating a new directory -->
+            <form method="POST" class="create-form">
+                {{ directory_form.hidden_tag() }}
+                {{ directory_form.directory_name }}
+                <input type="submit" name="create_directory" value="Create Directory" class="submit-button">
+            </form>
+        </section>
+        <hr class="section-divider">
+
+        <!-- File Upload Section -->
+        <section class="upload-file">
+            <h3>Upload a File</h3> <!-- Section title for uploading a file -->
+            <form id="client-encrypted-upload" method="POST" enctype="multipart/form-data" class="upload-form">
+                {{ upload_form.hidden_tag() }} <!-- CSRF protection token -->
+
+                <div class="form-group">
+                    {{ upload_form.file.label }} <!-- File input label -->
+                    {{ upload_form.file }} <!-- File input field -->
+                </div>
+
+                <div class="form-group">
+                    {{ upload_form.directory.label }} <!-- Directory selection label -->
+                    {{ upload_form.directory }} <!-- Directory selection field -->
+                </div>
+
+                <!-- Encryption settings (filled in by JS) so for debug purposes only -->
+                <input type="hidden" name="iv" id="iv">
+                <input type="hidden" name="salt" id="salt">
+                <input type="hidden" name="argon_time" id="argon_time" value="3">
+                <input type="hidden" name="argon_mem" id="argon_mem" value="65536"> <!-- 1 << 16 -->
+                <input type="hidden" name="argon_parallelism" id="argon_parallelism" value="1">
+
+                <!-- Client-side encryption password -->
+                <div class="form-group">
+                    <label for="enc-pass">Encryption password</label>
+                    <input type="password" id="enc-pass" placeholder="Enter a strong password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="enc-pass2">Confirm password</label>
+                    <input type="password" id="enc-pass2" placeholder="Confirm password" required>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Upload File" class="submit-button"> <!-- Submit button to upload the file -->
+                </div>
+            </form>
+        </section>
+        <hr class="section-divider">
+
+        <!-- Contacts Section -->
+        <h3>Your Contacts</h3>
+        <ul>
+            {% for contact in contacts %}
+                <li class="contact-item">
+                    <div class="contact-row">
+                        <span class="contact-name">{{ contact.contact.username|e }}</span>
+                        <form method="POST" action="{{ url_for('delete_contact', contact_id=contact.contact_id) }}" class="inline-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="icon-button"
+                                title="Remove {{ contact.contact.username|e }}"
+                                data-confirm="Remove {{ contact.contact.username|e }} from your contacts?">
+                                🗑️
+                            </button>
+                        </form>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Link to view all users -->
+        <a href="{{ url_for('users') }}">View All Users</a>
+        <hr class="section-divider">
+
+        <!-- Contact Requests Section -->
+        <h3>Contact Requests</h3>
+        {% if contact_requests %}
+            <ul>
+                <!-- Loop through pending contact requests and display them -->
+                {% for request in contact_requests %}
+                    <li>
+                        {{ request.sender.username|e }}
+                        <form method="POST" action="{{ url_for('respond_contact_request', request_id=request.id) }}" class="confirm-on-submit" data-confirm="Respond to contact request from {{ request.sender.username|e }}?">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" name="action" value="accept">Accept</button>
+                            <button type="submit" name="action" value="reject">Reject</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No contact requests at the moment.</p> <!-- Message if no pending contact requests -->
+        {% endif %}
+        <hr class="section-divider">
+
+        <!-- Folders Shared By Me Section -->
+        <section class="folders-you-share">
+            <h3>Folders Shared By Me</h3> <!-- Section title for folders shared by the user -->
+            <a href="{{ url_for('shared_by_me') }}">View All Shared Folders</a> <!-- Link to view all shared folders -->
+        </section>
+        <hr class="section-divider">
+
+        <!-- Folders Shared With Me Section -->
+        <section class="folders-you-share">
+            <h3>Folders Shared With Me</h3> <!-- Section title for folders shared with the user -->
+            <a href="{{ url_for('shared_with_me') }}">View All Shared Folders</a> <!-- Link to view all folders shared with the user -->
+        </section>
+        <hr class="section-divider">
+
+        <!-- Share Folder and Set Permissions Section -->
+        <section class="share-folder">
+            <h3>Share a Folder and Set Permissions</h3> <!-- Section title for sharing a folder -->
+            <form action="{{ url_for('share_folder') }}" method="POST" class="share-form">
+                {{ share_form.hidden_tag() }}
+
+                <label for="directory">Select a Folder to Share:</label>
+                <select id="directory" name="directory" class="form-select">
+                    <!-- Loop through the directories and display them as options -->
+                    {% for directory in directories %}
+                        <option value="{{ directory.id }}">{{ directory.original_dir_name|e }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="user">Select User to Share With:</label>
+                <select id="user" name="user" class="form-select">
+                    <!-- Loop through the contacts and display them as options -->
+                    {% for contact in contacts %}
+                        <option value="{{ contact.contact_id }}">{{ contact.contact.username|e }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="permissions">Select Permissions:</label>
+                <select id="permissions" name="permissions" class="form-select">
+                    <!-- List of available permission options for the shared folder -->
+                    <option value="delete_add_download">Delete, Add, Download</option>
+                    <option value="delete_add">Delete, Add</option>
+                    <option value="delete_download">Delete, Download</option>
+                    <option value="add_download">Add, Download</option>
+                    <option value="delete">Delete Only</option>
+                    <option value="add">Add Only</option>
+                    <option value="download">Download Only</option>
+                    <option value="none">No Permissions</option>
+                </select>
+
+                <input type="submit" value="Share Folder" class="submit-button"> <!-- Button to share the folder -->
+            </form>
+        </section>
+    </div>
+
+    <div id="session-timeouts"
+        data-inactive="{{ INACTIVE_SESSION_TIMEOUT.total_seconds() | int }}"
+        data-absolute="{{ ABSOLUTE_SESSION_TIMEOUT.total_seconds() | int }}">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/argon2-browser/dist/argon2-bundled.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

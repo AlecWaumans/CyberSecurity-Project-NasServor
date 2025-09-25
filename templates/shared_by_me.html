@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadata for the page -->
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for responsive design -->
+    <title>Folders You Share</title> <!-- Page title displayed in the browser tab -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to external CSS file for styling -->
+</head>
+<body>
+    <!-- Flash Notifications -->
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-notification flash-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container">
+        <!-- Header section with page title and navigation link -->
+        <header>
+            <h1>Folders You Share</h1> <!-- Main heading for the page -->
+            <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a> <!-- Link to go back to the dashboard -->
+        </header>
+
+        <!-- Section to display folders shared by the user -->
+        <section class="shared-folders">
+            {% if shared_folders %}
+                <!-- If shared folders exist, loop through them and display -->
+                <ul>
+                    {% for folder in shared_folders %}
+                        <li>
+                            <strong>{{ folder.folder_name|e }}</strong>
+                            <ul>
+                                <li>Shared with: {{ folder.shared_with_user.username|e }}</li>
+                            </ul>
+                            <!-- Form to stop sharing the folder -->
+                            <form method="POST" action="{{ url_for('shared_by_me') }}">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <input type="hidden" name="directory_id" value="{{ folder.id }}"> <!-- Hidden field to pass folder ID -->
+                                <button type="submit" class="delete-button confirm-stop-sharing">
+                                    Stop Sharing <!-- Button text to stop sharing -->
+                                </button>
+                            </form>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <!-- If no shared folders, display this message -->
+                <p>You are not sharing any folders at the moment.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    <div id="session-timeouts"
+         data-inactive="{{ INACTIVE_SESSION_TIMEOUT.total_seconds() | int }}"
+         data-absolute="{{ ABSOLUTE_SESSION_TIMEOUT.total_seconds() | int }}">
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

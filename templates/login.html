@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Metadata for the page -->
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Ensures proper rendering in Internet Explorer -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for responsive design -->
+    <title>Login</title> <!-- Page title displayed in the browser tab -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to external CSS file for styling -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+    <!-- Flash Notifications -->
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-notification flash-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main container for the login page -->
+    <div class="container">
+        <h1>Login Page</h1> <!-- Page header -->
+
+        <!-- Login form where users input their credentials -->
+        <form method="POST" action="" autocomplete="off">
+            {{ form.hidden_tag() }} <!-- Hidden tag for CSRF protection -->
+
+            <!-- Username input field -->
+            <div>
+                {{ form.username.label }} <!-- Username label -->
+                {{ form.username(autocapitalize="off") }} <!-- Username input field -->
+                {% if form.username.errors %} <!-- Check if there are errors in the username input -->
+                    <div class="error">
+                        {% for error in form.username.errors %}
+                            <p>{{ error|e }}</p> <!-- Escaped error to prevent XSS -->
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Password input field -->
+            <div>
+                {{ form.password.label }} <!-- Password label -->
+                {{ form.password(autocomplete="new-password") }} <!-- Password input field -->
+                {% if form.password.errors %} <!-- Check if there are errors in the password input -->
+                    <div class="error">
+                        {% for error in form.password.errors %}
+                            <p>{{ error|e }}</p> <!-- Escaped error to prevent XSS -->
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="g-recaptcha" data-sitekey="{{ config['RECAPTCHA_SITE_KEY'] }}"></div>
+
+            <!-- Submit button for the form -->
+            <div>{{ form.submit }}</div> <!-- Submit button to login -->
+        </form>
+
+        <!-- Link to the registration page for users who don't have an account -->
+        <a href="{{ url_for('register') }}">Don't have an account? Sign Up</a> <!-- Navigation link to the sign-up page -->
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+
+    <script>
+        const navEntries = window.performance.getEntriesByType("navigation");
+        const navType = navEntries.length > 0 ? navEntries[0].type : window.performance.navigation.type;
+
+        if (navType === "back_forward" || navType === 2) {
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>

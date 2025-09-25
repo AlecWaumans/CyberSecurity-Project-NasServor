@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logs utilisateur</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Logs of user actions</h1>
+
+        <a href="{{ url_for('dashboard') }}" class="back-link">← Back to the dashboard</a>
+
+        {% if logs %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th>IP Address</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                        <tr>
+                            <td>{{ log.timestamp }}</td>
+                            <td>{{ log.user.username|e if log.user else "Anonymous" }}</td>
+                            <td>{{ log.action|e }}</td>
+                            <td>{{ log.ip_address|e }}</td>
+                            <td>{{ log.details|e }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No logs recorded at the moment.</p>
+        {% endif %}
+    </div>
+
+    <div id="session-timeouts"
+         data-inactive="{{ INACTIVE_SESSION_TIMEOUT.total_seconds() | int }}"
+         data-absolute="{{ ABSOLUTE_SESSION_TIMEOUT.total_seconds() | int }}">
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

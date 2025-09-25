@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Metadata for the page -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Storage Server</title> <!-- Title of the page displayed in the browser tab -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to the external CSS file for styling -->
+</head>
+
+<body>
+    <!-- Hero Section: Introduction and Call-to-Action -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Welcome to the File Storage Server</h1> <!-- Main headline introducing the file storage service -->
+            <p>Securely upload, share, and manage your files effortlessly.</p> <!-- Short description of the service -->
+            <div class="cta-buttons">
+                <!-- Call-to-Action buttons linking to login and registration pages -->
+                <a href="{{ url_for('login') }}" class="cta-button">Login</a> <!-- Link to login page -->
+                <a href="{{ url_for('register') }}" class="cta-button">Register</a> <!-- Link to registration page -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section: Overview of key features -->
+    <div class="features">
+        <!-- Feature 1: Easy File Upload -->
+        <div class="feature">
+            <h3>Easy File Upload</h3> <!-- Title for the feature -->
+            <p>Browse to easily upload your files to the cloud.</p> <!-- Description of the file upload feature -->
+        </div>
+
+        <!-- Feature 2: Folder Sharing -->
+        <div class="feature">
+            <h3>Folder Sharing</h3> <!-- Title for the feature -->
+            <p>Share your folders with contacts and set permissions for better collaboration.</p> <!-- Description of the folder sharing and permissions feature -->
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+<div class="container">
+    <h3>All Users</h3> <!-- Section heading for listing all users -->
+
+    <!-- Start of the unordered list for users -->
+    <ul>
+        {% for user in users %}
+            <!-- Loop through each user and display their username -->
+            <li>
+                {{ user.username|e }}
+
+                <!-- Form to send a contact request to the user -->
+                <form method="POST" action="{{ url_for('send_contact_request', receiver_id=user.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <!-- Submit button to send a contact request to the selected user -->
+                    <button type="submit">Add Contact</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <div id="session-timeouts"
+         data-inactive="{{ INACTIVE_SESSION_TIMEOUT.total_seconds() | int }}"
+         data-absolute="{{ ABSOLUTE_SESSION_TIMEOUT.total_seconds() | int }}">
+    </div>
+</div>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>

@@ -1,0 +1,626 @@
+/* Global styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fc;
+    color: #333;
+    line-height: 1.6;
+}
+
+h1, h3 {
+    text-align: center;
+    color: #2c3e50;
+    font-weight: 600;
+}
+
+h1 {
+    font-size: 42px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 24px;
+    color: #2980b9;
+    margin-top: 20px;
+}
+
+p {
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+}
+
+.hero h1 {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.cta-button {
+    background-color: #27ae60;
+    color: white;
+    padding: 15px 30px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #2ecc71;
+}
+
+/* Features Section */
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+}
+
+.feature {
+    text-align: center;
+    padding: 20px;
+    width: 30%;
+}
+
+.feature h3 {
+    color: #2980b9;
+    margin-bottom: 10px;
+}
+
+.feature p {
+    color: #777;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    background-color: #34495e;
+    color: white;
+    padding: 20px;
+    margin-top: 50px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Container for forms and content */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Links */
+a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Form styles */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+input[type="text"], input[type="password"], select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: 100%;
+}
+
+input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Error message styling */
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Styles for Shared Folders section */
+.shared-folders {
+    margin-top: 30px;
+    padding: 10px;
+    background-color: #eaf1f8;
+    border: 1px solid #d1e2f2;
+    border-radius: 4px;
+}
+
+.shared-folders h3 {
+    font-size: 20px;
+    color: #2980b9;
+}
+
+.shared-folders ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.shared-folders ul li {
+    margin: 10px 0;
+}
+
+.shared-folders ul li a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.shared-folders ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Styles for Folder Sharing Permissions Section */
+form {
+    margin-top: 20px;
+}
+
+form label {
+    font-size: 18px;
+    color: #2c3e50;
+}
+
+form select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+form input[type="submit"] {
+    background-color: #27ae60;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form input[type="submit"]:hover {
+    background-color: #2ecc71;
+}
+
+/* Dashboard Styles (modifications added) */
+
+/* Container for dashboard */
+.dashboard-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Welcome message */
+.dashboard-container h1 {
+    font-size: 36px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+/* Logout button */
+.logout-button {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 12px 25px;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #c0392b;
+}
+
+/* Directories Section */
+.directories {
+    margin-top: 40px;
+}
+
+.directories h2 {
+    color: #2980b9;
+    font-size: 28px;
+}
+
+.directories ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.directories li {
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.directories li a {
+    color: #2980b9;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.directories li a:hover {
+    text-decoration: underline;
+}
+
+/* Create new directory form */
+.create-form {
+    margin-top: 40px;
+}
+
+.create-form input[type="text"] {
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.create-form input[type="submit"] {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.create-form input[type="submit"]:hover {
+    background-color: #2980b9;
+}
+
+/* Upload file section */
+.upload-form {
+    margin-top: 40px;
+}
+
+/* Shared Folders Section */
+.shared-folders, .shared-by-me {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f7f9fc;
+    border-radius: 6px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.shared-folders ul, .shared-by-me ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.shared-folders li, .shared-by-me li {
+    margin: 10px 0;
+}
+
+.shared-folders a, .shared-by-me a {
+    color: #3498db;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.shared-folders a:hover, .shared-by-me a:hover {
+    text-decoration: underline;
+}
+
+/* Folder Sharing Permissions */
+.form-select {
+    padding: 12px 15px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.form-select option {
+    padding: 10px;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #e74c3c;
+    float: right;
+    margin-left: 10px;
+    transition: color 0.2s ease;
+}
+
+.icon-button:hover {
+    color: #c0392b;
+}
+
+.contact-row,
+.file-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.contact-name,
+.file-name {
+    flex-grow: 1;
+    font-size: 18px;
+    color: #2c3e50;
+    word-break: break-word;
+}
+
+.download-link {
+    margin-right: 15px;
+    font-size: 16px;
+    color: #3498db;
+    text-decoration: none;
+}
+
+.download-link:hover {
+    text-decoration: underline;
+}
+
+.section-divider {
+    border: 0;
+    height: 1px;
+    background: #dcdfe6;
+    margin: 40px 0;
+    opacity: 0.7;
+}
+
+#flash-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px;
+}
+
+.flash-notification {
+    padding: 15px 20px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    color: #fff;
+    font-size: 16px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    animation: slide-in 0.4s ease-out;
+    position: relative;
+}
+
+/* Color by category */
+.flash-success { background-color: #2ecc71; } /* green */
+.flash-danger  { background-color: #e74c3c; } /* red */
+.flash-warning,
+.flash-message { background-color: #f39c12; } /* orange */
+.flash-info    { background-color: #3498db; } /* blue */
+
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Entry animation */
+@keyframes slide-in {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #2980b9;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 20px;
+    text-decoration: none;
+    color: #3498db;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.tfa-help-text {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.9em;
+}
+
+.qr-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#qr-img {
+    width: 200px;
+    height: 200px;
+    margin-top: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.download-button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    font-size: 0.95em;
+    border-radius: 5px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.download-button:hover {
+    background-color: #218838;
+}
+
+.password-hint {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85em;
+}
+
+/* Password dialog */
+.pw-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  padding: 0;
+  max-width: 420px;
+  width: 90vw;
+  background: transparent;
+  z-index: 9999;
+}
+
+.pw-dialog::backdrop {
+  background: rgba(0,0,0,.55);
+}
+
+.pw-dialog__box {
+  background: #2c2b34;
+  color: #fff;
+  padding: 18px 20px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.3);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+.pw-dialog__title { margin: 0 0 12px; font-size: 18px; color: #00aaff; }
+.pw-dialog__label { display: block; margin: 0 0 6px; font-size: 14px; color: #cfd8e3; }
+
+.pw-dialog__row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.pw-dialog__input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #1f1e26;
+  color: #fff;
+  outline: none;
+}
+
+.pw-dialog__input:focus { border-color: #00d5ff; }
+
+.pw-dialog__toggle {
+  border: 0;
+  background: #3a3944;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.pw-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.pw-dialog__btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 0;
+  cursor: pointer;
+}
+
+.pw-dialog__btn--ghost { background: #555; color: #fff; }
+.pw-dialog__btn--primary { background: #00d5ff; color: #000; font-weight: 600; }

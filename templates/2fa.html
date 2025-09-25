@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Two-Factor Authentication</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Two-Factor Authentication</h1>
+        <p>Please enter the 6-digit code from your authenticator app.</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-notification flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" action="{{ url_for('two_factor') }}">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.token.label }}<br>
+                {{ form.token(size=6, maxlength=6, class="form-control", placeholder="Enter 2FA code", required=True) }}
+                <small class="tfa-help-text">
+                    If you lost the QR code to your authenticator app, please contact the administrator.
+                </small>
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="submit-button") }}
+            </div>
+        </form>
+
+        <a href="{{ url_for('logout') }}">Cancel and Logout</a>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

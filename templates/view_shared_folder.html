@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ directory_name|e }} - Files</title> <!-- Title of the page, dynamically displays the folder's name -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <!-- Flash Notifications -->
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-notification flash-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Files in Shared Folder: {{ directory_name|e }}</h1>
+            <!-- Link to navigate back to the "Shared with Me" page -->
+            <a href="{{ url_for('shared_with_me') }}" class="back-button">Back to Shared Folders</a>
+        </header>
+
+        <section class="folder-files">
+            <!-- Check if the folder contains any files -->
+            {% if files %}
+                <ul>
+                    <!-- Loop through each file and display the file name with a download link -->
+                    {% for file in files %}
+                        <li class="file-item">
+                            <div class="file-row">
+                                <span class="file-name">{{ file.original_filename|e }}</span>
+
+                                    {% if 'download' in permissions %}
+                                    <button
+                                            class="decrypt-download"
+                                            data-file-id="{{ file.id }}"
+                                            data-directory-id="{{ directory_id }}"
+                                            data-filename-enc="{{ file.enc_name }}"
+                                            data-original-filename="{{ file.original_filename|e }}">
+                                        Download
+                                    </button>
+                                    {% endif %}
+
+                                    {% if 'delete' in permissions %}
+                                        <form action="{{ url_for('delete_file', directory_id=directory_id, filename=file.enc_name) }}" method="POST" class="inline-form">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="icon-button"
+                                                title="Delete '{{ file.original_filename|e }}'"
+                                                data-confirm="Are you sure you want to delete '{{ file.original_filename|e }}'?">
+                                                🗑️
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <!-- Message if no files are found in the shared folder -->
+                <p>No files in this folder.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    <div id="session-timeouts"
+         data-inactive="{{ INACTIVE_SESSION_TIMEOUT.total_seconds() | int }}"
+         data-absolute="{{ ABSOLUTE_SESSION_TIMEOUT.total_seconds() | int }}">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/argon2-browser/dist/argon2-bundled.min.js"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

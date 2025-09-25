@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Metadata for the page -->
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Ensures proper rendering in Internet Explorer -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for responsive design -->
+    <title>Register</title> <!-- Page title displayed in the browser tab -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to external CSS file for styling -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</head>
+
+<body>
+    <!-- Flash Notifications -->
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-notification flash-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main container for the registration page -->
+    <div class="container">
+        <h1>Register Page</h1> <!-- Page header -->
+
+        <!-- Registration form where users input their credentials -->
+        <form method="POST" action="">
+            {{ form.hidden_tag() }} <!-- Hidden tag for CSRF protection -->
+
+            <!-- Username input field -->
+            <div>{{ form.username.label }} {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error">
+                        {% for error in form.username.errors %}
+                            <p>{{ error|e }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div> <!-- Username label and input field -->
+
+            <!-- Password input field -->
+            <div>{{ form.password.label }} {{ form.password }}
+                <small class="password-hint">
+                    Minimum 8 characters, 1 uppercase letter, 1 number, and 1 special character: <code>!@#$%^&*()-_=+[]{},.?/</code>
+                </small>
+                {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                        <p class="error">{{ error|e }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div> <!-- Password label and input field -->
+
+            <div class="form-group">
+                <div class="g-recaptcha" data-sitekey="{{ config['RECAPTCHA_SITE_KEY'] }}"></div>
+            </div>
+
+            <!-- Submit button for the form -->
+            <div>{{ form.submit }}</div> <!-- Submit button to register -->
+        </form>
+
+        {% if qr_code %}
+            <div class="qr-container">
+                <h4>Important ! Scan this QR code with Google Authenticator.</h4>
+                <img id="qr-img" src="data:image/png;base64,{{ qr_code }}" alt="QR Code 2FA" />
+                <a id="download-btn" download="2fa_qrcode.png" href="data:image/png;base64,{{ qr_code }}" class="download-button">Download QR Code</a>
+            </div>
+        {% endif %}
+
+        <!-- Link to the login page for users who already have an account -->
+        <a href="{{ url_for('login') }}">Already have an account? Log In</a> <!-- Navigation link to the login page -->
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

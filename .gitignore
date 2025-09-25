@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
+.env
+*.env
+
+# Virtual environment
+venv/
+ENV/
+
+# Flask cache files
+*.log
+instance/
+*.sqlite3
+*.db
+
+# Pytest and testing files
+.coverage
+.tox/
+.pytest_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Static and media files (if you upload them dynamically)
+static/uploads/
+static/tmp/
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Node modules (if you use npm/yarn for static files)
+node_modules/
+
+# Ignore pipfile.lock if pipenv is used (optional)
+Pipfile.lock
+
+# Temporary files
+*.bak
+*.swp
+*.tmp
+
+# Encrypted files
+*.enc
+
+# 2FA QR code
+private/*.png

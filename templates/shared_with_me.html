@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Metadata for the page -->
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Viewport settings for responsive design -->
+    <title>Shared with Me</title> <!-- Page title displayed in the browser tab -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"> <!-- Link to external CSS file for styling -->
+</head>
+<body>
+    <!-- Flash Notifications -->
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-notification flash-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <div class="container">
+        <!-- Header section with page title and navigation link -->
+        <header>
+            <h1>Shared Folders with You</h1> <!-- Main heading for the page -->
+            <a href="{{ url_for('dashboard') }}" class="back-button">Back to Dashboard</a> <!-- Link to go back to the dashboard -->
+        </header>
+
+        <!-- Section to display shared folders -->
+        <section class="shared-folders">
+            {% if shared_folders %}
+                <!-- If shared folders exist, loop through them and display -->
+                <ul>
+                    {% for directory in shared_folders %}
+                        <li>
+                            <strong>{{ directory.directory_name|e }}</strong> (shared by: {{ directory.owner.username|e }})<br>
+                            Permissions: {{ directory.permissions.replace('_', ', ') }}
+                            <a href="{{ url_for('view_shared_folder', owner_id=directory.owner_id, directory_id=directory.directory_id) }}">View Files</a> <!-- Link to view files in the shared folder -->
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <!-- If no shared folders, display this message -->
+                <p>No folders are shared with you at the moment.</p>
+            {% endif %}
+        </section>
+    </div>
+
+    <div id="session-timeouts"
+         data-inactive="{{ INACTIVE_SESSION_TIMEOUT.total_seconds() | int }}"
+         data-absolute="{{ ABSOLUTE_SESSION_TIMEOUT.total_seconds() | int }}">
+    </div>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>
